@@ -1,0 +1,5 @@
+FROM node:10
+
+WORKDIR /code
+
+CMD [ "npm", "run", "dev-start" ]
