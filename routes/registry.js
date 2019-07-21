@@ -15,6 +15,28 @@ module.exports = function(app){
         res.json({'version' : version})
     });
 
+    app.get('/stats/attending', (req, res) => {
+        let attendingParam = "yes"
+        if(req.query && req.query.attending){
+            attendingParam = req.query.attending
+        }
+        Guest.find({attending: attendingParam}, { '_id' : 0, 'name' : 1 }, 
+            (err, docs) => {
+            if (!err){ 
+                res.json(docs);
+            } else {throw err;}
+        });
+    });
+
+    app.get('/stats/noresponse', (req, res) => {
+        Guest.find({attending: null}, { '_id' : 0, 'name' : 1 }, 
+            (err, docs) => {
+            if (!err){ 
+                res.json(docs);
+            } else {throw err;}
+        });
+    });
+
     app.get('/guests', (req, res) => {
         Guest.find({}, 
             { 
