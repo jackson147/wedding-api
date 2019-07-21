@@ -16,7 +16,17 @@ module.exports = function(app){
     });
 
     app.get('/guests', (req, res) => {
-        Guest.find({}, 'name attending day gluten starter main dessert', (err, docs) => {
+        Guest.find({}, 
+            { 
+                '_id' : 0, 
+                'name' : 1, 
+                'attending' : 1, 
+                'day' : 1, 
+                'gluten' : 1, 
+                'starter' : 1,
+                'main' : 1, 
+                'dessert' : 1 
+            }, (err, docs) => {
             if (!err){ 
                 res.json(docs);
             } else {throw err;}
