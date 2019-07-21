@@ -29,7 +29,18 @@ module.exports = function(app){
     });
 
     app.get('/stats/noresponse', (req, res) => {
-        Guest.find({attending: null}, { '_id' : 0, 'name' : 1 }, 
+        let day = null
+        if(req.query && req.query.day){
+            if(req.query.day == "true" || req.query.day == "false"){
+                day = req.query.day 
+            }
+        }
+        let query = {attending: null}
+        if(day){
+            query['day'] = day
+        }
+
+        Guest.find(query, { '_id' : 0, 'name' : 1 }, 
             (err, docs) => {
             if (!err){ 
                 res.json(docs);
