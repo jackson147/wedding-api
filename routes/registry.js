@@ -9,6 +9,14 @@ function newGuestModel(){
     return new Guest
 }
 
+function prettifyGuestObjects(guestArray){
+    stringResponse = ""
+    for(let i =0; i<guestArray.length; i++){
+        stringResponse += guestArray[i].name + "\n"
+    }
+    return stringResponse
+}
+
 module.exports = function(app){
 
     app.get('/version', (req, res) => {
@@ -16,14 +24,31 @@ module.exports = function(app){
     });
 
     app.get('/stats/attending', (req, res) => {
+        let pretty=false
         let attendingParam = "yes"
-        if(req.query && req.query.attending){
-            attendingParam = req.query.attending
+        if(req.query){
+            if(req.query.attending){
+                attendingParam = req.query.attending
+            }
+            if(req.query.pretty){
+                pretty = req.query.pretty == "true"
+            }
         }
-        Guest.find({attending: attendingParam}, { '_id' : 0, 'name' : 1 }, 
+        Guest.find(
+            {attending: attendingParam}, 
+            { '_id' : 0, 'name' : 1 },
+            {
+                sort:{
+                    name: 1
+                }
+            }, 
             (err, docs) => {
             if (!err){ 
-                res.json(docs);
+                if(pretty){
+                    res.send('<pre>' + prettifyGuestObjects(docs) + '</pre>')
+                }else{
+                    res.json(docs);
+                }
             } else {throw err;}
         });
     });
