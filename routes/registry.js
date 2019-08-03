@@ -10,7 +10,7 @@ function newGuestModel(){
 }
 
 function prettifyGuestObjects(guestArray){
-    stringResponse = ""
+    stringResponse = "Total Attending: " + guestArray.length + "\n"
     for(let i =0; i<guestArray.length; i++){
         stringResponse += guestArray[i].name + "\n"
     }
