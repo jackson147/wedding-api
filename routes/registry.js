@@ -26,6 +26,8 @@ module.exports = function(app){
     app.get('/stats/attending', (req, res) => {
         let pretty=false
         let attendingParam = "yes"
+        let day = null
+
         if(req.query){
             if(req.query.attending){
                 attendingParam = req.query.attending
@@ -33,9 +35,25 @@ module.exports = function(app){
             if(req.query.pretty){
                 pretty = req.query.pretty == "true"
             }
+            if(req.query.day){
+                if(req.query.day == "true"){
+                    day = true
+                }else if(req.query.day == "false"){
+                    day = false
+                }
+                // Otherwise leave as null
+            }
         }
+
+        let query = {attending: attendingParam}
+
+        // Only set if it's NOT null, as we want to see all if it's null
+        if(day != null){
+            query['day'] = day
+        }
+
         Guest.find(
-            {attending: attendingParam}, 
+            query,
             { '_id' : 0, 'name' : 1 },
             {
                 sort:{
