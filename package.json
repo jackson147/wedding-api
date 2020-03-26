@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "node api.prod.js",
+    "start": "node api.js",
     "dev-start": "node_modules/nodemon/bin/nodemon.js api.js"
   },
   "private": true,
