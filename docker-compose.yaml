@@ -1,0 +1,28 @@
+version: "3.3"
+
+services:
+  wedding-api:
+    image: jackson147/wedding-api:latest
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      - web
+      - backend
+  mongo:
+    image: mongo
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - backend
+
+networks:
+  web:
+    external: true
+  backend:
+    external: false
+
+volumes:
+  mongodb:
+    external: true
