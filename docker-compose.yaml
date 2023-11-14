@@ -11,7 +11,7 @@ services:
       - web
       - backend
   mongo:
-    image: mongo
+    image: mongo:3
     volumes:
       - mongodb:/data/db
     networks:
